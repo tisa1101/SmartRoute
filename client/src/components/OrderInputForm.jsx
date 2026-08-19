@@ -1,3 +1,4 @@
+import API_BASE from '../api';
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import L from 'leaflet';
@@ -50,7 +51,7 @@ const OrderInputForm = () => {
     console.log("Submitting Order:", orderData);
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/orders/", orderData);
+      const response = await axios.post(API_BASE + "/api/orders/", orderData);
       console.log("Order Created:", response.data);
       alert("Order successfully created!");
     } catch (error) {

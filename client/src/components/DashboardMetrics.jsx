@@ -1,3 +1,4 @@
+import API_BASE from '../api';
 import { useEffect, useState } from "react";
 
 const DashboardMetrics = ({ routeData }) => {
@@ -11,7 +12,7 @@ const DashboardMetrics = ({ routeData }) => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/analytics/dashboard-stats");
+        const response = await fetch(API_BASE + "/api/analytics/dashboard-stats");
         const data = await response.json();
         setStats(data);
       } catch (error) {

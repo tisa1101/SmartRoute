@@ -1,3 +1,4 @@
+import API_BASE from '../api';
 import React, { useState, useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -72,7 +73,7 @@ const MapComponent = ({ routeData }) => {
     try {
       const fetched = await Promise.all(
         orderIds.map((id) =>
-          fetch(`http://127.0.0.1:8000/api/orders/${id}`).then((r) => r.json())
+          fetch(`${API_BASE}/api/orders/${id}`).then((r) => r.json())
         )
       );
       setOrders(fetched);

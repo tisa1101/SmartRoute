@@ -1,10 +1,11 @@
+import API_BASE from '../api';
 import React from "react";
 import OrderInputForm from "../components/OrderInputForm";
 import Navbar from '../components/Navbar';
 
 const OrderPage = () => {
   const handleOrderSubmit = (orderData) => {
-    fetch("http://127.0.0.1:8000/api/orders/", {
+    fetch(API_BASE + "/api/orders/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData),

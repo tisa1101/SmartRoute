@@ -1,3 +1,4 @@
+import API_BASE from '../api';
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -11,7 +12,7 @@ const VehicleInputForm = () => {
     console.log("Submitting Vehicle:", vehicleData);
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/vehicles/", vehicleData);
+      const response = await axios.post(API_BASE + "/api/vehicles/", vehicleData);
       console.log("Vehicle Added:", response.data);
       alert("Vehicle successfully added!");
     } catch (error) {

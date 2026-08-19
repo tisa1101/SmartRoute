@@ -1,4 +1,5 @@
 import { ChevronsLeft, ChevronsRight, Truck, Home, List } from "lucide-react";
+import API_BASE from '../api';
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo3.png";
@@ -9,7 +10,7 @@ const Sidebar = ({ setRouteData }) => {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/vehicles/");
+        const response = await fetch(API_BASE + "/api/vehicles/");
         if (!response.ok) {
           throw new Error("Failed to fetch vehicles");
         }
@@ -27,7 +28,7 @@ const Sidebar = ({ setRouteData }) => {
 
   const fetchVehicleRoute = async (vehicleId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/routes/vehicle/${vehicleId}`);
+      const response = await fetch(`${API_BASE}/api/routes/vehicle/${vehicleId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch vehicle route");
       }
