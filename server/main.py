@@ -12,17 +12,23 @@ app = FastAPI(title="RouteX - Intelligent Fleet Optimization Platform")
 
 origins = [
     "*",
-    "http://localhost:3000/",
-    "http://localhost:3005/"
+    "http://localhost:3000",
+    "http://localhost:3005",
+    "https://*.vercel.app",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],   # Allow all for deployment; restrict to your Vercel URL in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "service": "SmartRoute Backend"}
+
 
 # Include routers
 app.include_router(vehicles.router, prefix="/api")

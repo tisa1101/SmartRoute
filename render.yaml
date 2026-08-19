@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: smartroute-backend
+    runtime: docker
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: PORT
+        value: "8000"
+    healthCheckPath: /health
