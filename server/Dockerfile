@@ -1,5 +1,5 @@
-# Use an official Python image
-FROM python:3.10-slim
+# Use full Python image (slim lacks libs needed by OSMnx/scipy/networkx)
+FROM python:3.10
 
 # Set the working directory
 WORKDIR /app
