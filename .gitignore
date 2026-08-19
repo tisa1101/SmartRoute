@@ -1,0 +1,45 @@
+# RouteX Fleet AI — Intelligent Fleet Optimization Platform
+# ===========================================================
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+*.env
+
+# ML models (large binaries — do not commit)
+server/ml_models/*.pkl
+
+# Node / Frontend
+client/node_modules/
+client/dist/
+client/.vite/
+client/.cache/
+
+# Logs
+*.log
+logs/
+
+# Docker volumes and local DB
+postgres_data/
+*.sqlite3
+*.db
+
+# IDE / OS
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# Environment secrets — NEVER commit
+.env
+.env.*
+*.secret
