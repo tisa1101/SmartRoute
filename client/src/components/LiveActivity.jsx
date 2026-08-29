@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Truck, CheckCircle2, AlertTriangle, Route } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import API_BASE from '../api';
 
 const LiveActivity = () => {
   const [activities, setActivities] = useState([]);
+  const highestSeenRef = useRef(0);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -15,6 +17,20 @@ const LiveActivity = () => {
           const orders = await response.json();
           // Sort by id descending (assuming higher id is newer)
           orders.sort((a, b) => b.id - a.id);
+          
+          if (orders.length > 0) {
+            const currentHighest = orders[0].id;
+            
+            // If this is not the initial load and we have new orders
+            if (highestSeenRef.current !== 0 && currentHighest > highestSeenRef.current) {
+              const newOrdersCount = currentHighest - highestSeenRef.current;
+              toast.success(`Incoming Dispatch: ${newOrdersCount} new order(s) logged in the system.`, {
+                icon: '🛰️',
+                duration: 4000
+              });
+            }
+            highestSeenRef.current = Math.max(highestSeenRef.current, currentHighest);
+          }
           
           // Map to activities
           const recentActivities = orders.slice(0, 10).map(order => {

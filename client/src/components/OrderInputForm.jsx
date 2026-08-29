@@ -3,11 +3,12 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
+import toast from 'react-hot-toast';
 
 const OrderInputForm = () => {
   const [orderData, setOrderData] = useState({
     name: "",
-    priority: 0,
+    priority: 1,
     weight: 0,
     delivery_coordinates: "",
   });
@@ -49,6 +50,11 @@ const OrderInputForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (!orderData.delivery_coordinates) {
+      toast.error("Please click on the map to set a target coordinate.");
+      return;
+    }
+    
     // Convert coordinate string back to an object to match Backend Pydantic Schema
     const [lat, lng] = orderData.delivery_coordinates.split(",");
     const payload = {
@@ -59,15 +65,19 @@ const OrderInputForm = () => {
       }
     };
     
-    console.log("Submitting Order:", payload);
+    const toastId = toast.loading('Dispatching order to active fleet...');
 
     try {
       const response = await axios.post(API_BASE + "/api/orders/", payload);
-      console.log("Order Created:", response.data);
-      alert("Order successfully created!");
+      toast.success(`Order #${response.data.id} successfully queued for routing!`, { id: toastId });
+      setOrderData({ name: "", priority: 1, weight: 0, delivery_coordinates: "" });
+      if (markerRef.current) {
+        markerRef.current.remove();
+        markerRef.current = null;
+      }
     } catch (error) {
       console.error("Error creating order:", error);
-      alert("Failed to create order.");
+      toast.error("Telemetry failure. Could not dispatch order.", { id: toastId });
     }
   };
 

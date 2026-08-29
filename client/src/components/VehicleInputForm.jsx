@@ -1,6 +1,7 @@
 import API_BASE from '../api';
 import React, { useState } from "react";
 import axios from "axios";
+import toast from 'react-hot-toast';
 
 const VehicleInputForm = () => {
   const [vehicleData, setVehicleData] = useState({
@@ -9,15 +10,21 @@ const VehicleInputForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting Vehicle:", vehicleData);
+    
+    if (vehicleData.capacity <= 0) {
+      toast.error("Capacity must be greater than 0 kg.");
+      return;
+    }
+    
+    const toastId = toast.loading('Initializing new transport unit...');
 
     try {
       const response = await axios.post(API_BASE + "/api/vehicles/", vehicleData);
-      console.log("Vehicle Added:", response.data);
-      alert("Vehicle successfully added!");
+      toast.success(`Vehicle 0${response.data.id} successfully registered with ${response.data.capacity}kg capacity.`, { id: toastId });
+      setVehicleData({ capacity: 0 });
     } catch (error) {
       console.error("Error adding vehicle:", error);
-      alert("Failed to add vehicle.");
+      toast.error("Systems failure. Could not register vehicle.", { id: toastId });
     }
   };
 
