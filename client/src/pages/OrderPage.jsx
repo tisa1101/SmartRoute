@@ -16,13 +16,12 @@ const OrderPage = () => {
   };
 
   return (
-    <>
-    <Navbar />
-    <div>
-      <OrderInputForm onSubmit={handleOrderSubmit} />
+    <div className="bg-[#050811] min-h-screen text-gray-200">
+      <Navbar />
+      <main className="pt-24 pb-12 px-6">
+        <OrderInputForm onSubmit={handleOrderSubmit} />
+      </main>
     </div>
-    </>
-    
   );
 };
 

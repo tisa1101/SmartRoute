@@ -16,12 +16,12 @@ const VehiclePage = () => {
   };
 
   return (
-    <>
+    <div className="bg-[#050811] min-h-screen text-gray-200">
       <Navbar />
-      <div>
+      <main className="pt-24 pb-12 px-6">
         <VehicleInputForm onSubmit={handleVehicleSubmit} />
-      </div>
-    </>
+      </main>
+    </div>
   );
 };
 

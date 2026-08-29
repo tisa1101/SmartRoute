@@ -22,17 +22,27 @@ const VehicleInputForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-gray-900 text-white rounded-lg shadow-md mt-6">
-      <h2 className="text-xl font-semibold mb-4 text-orange-400">Add New Vehicle</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-xl mx-auto p-8 bg-[#1a1f2e]/80 backdrop-blur-xl border border-indigo-900/50 text-gray-200 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.5)] mt-10">
+      <div className="mb-6 flex items-center gap-3">
+        <div className="p-2 bg-emerald-500/20 rounded-lg text-emerald-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-white tracking-tight">Register New Vehicle</h2>
+          <p className="text-sm text-gray-400">Add a new transport unit to the active fleet.</p>
+        </div>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Vehicle Capacity */}
         <div>
-          <label className="block text-sm font-medium">Vehicle Capacity</label>
+          <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Maximum Payload Capacity (Kg)</label>
           <input
             type="number"
             value={vehicleData.capacity}
             onChange={(e) => setVehicleData({ ...vehicleData, capacity: Number(e.target.value) })}
-            className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md shadow-sm text-white focus:ring-orange-500 focus:border-orange-500"
+            className="block w-full px-4 py-3 bg-[#0b0f19] border border-gray-700/50 rounded-xl text-white focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all outline-none"
+            placeholder="0"
             required
           />
         </div>
@@ -40,9 +50,9 @@ const VehicleInputForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition"
+          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] transform hover:-translate-y-0.5 active:translate-y-0 mt-4"
         >
-          Submit Vehicle
+          INITIALIZE VEHICLE
         </button>
       </form>
     </div>
