@@ -19,31 +19,12 @@ const DashboardMetrics = ({ routeData }) => {
         console.error("Error fetching dashboard stats:", error);
       }
     };
-import { useEffect, useState } from "react";
-
-const DashboardMetrics = ({ routeData }) => {
-  const [stats, setStats] = useState({
-    total_orders: 0,
-    pending_orders: 0,
-    total_vehicles: 0,
-    vehicles_with_in_process_orders: 0,
-  });
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch(API_BASE + "/api/analytics/dashboard-stats");
-        const data = await response.json();
-        setStats(data);
-      } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
-      }
-    };
     fetchStats();
   }, []);
+
   // Assuming fuel price 103rs and a delivery vehicle can travel 17.2km with 1L fuel
-  const cost_perKM =103/17.2
-  const costEfficiency = routeData ? (routeData.route_distance * cost_perKM).toFixed(2) : "N/A"; // Assuming cost = 0.5 per km
+  const cost_perKM = 103 / 17.2;
+  const costEfficiency = routeData ? (routeData.route_distance * cost_perKM).toFixed(2) : "N/A";
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 mb-2">
