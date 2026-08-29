@@ -2,27 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Truck, CheckCircle2, AlertTriangle, Route } from 'lucide-react';
 
-const mockActivities = [
-  { id: 1, type: 'info', icon: Route, title: 'Route Optimized', desc: 'Algorithm updated sequence for Vehicle 02.', time: 'Just now', color: 'text-blue-400' },
-  { id: 2, type: 'success', icon: CheckCircle2, title: 'Order #1024 Delivered', desc: 'Driver confirmed drop-off at Andheri.', time: '5m ago', color: 'text-emerald-400' },
-  { id: 3, type: 'warning', icon: AlertTriangle, title: 'Traffic Delay', desc: 'Heavy traffic detected on JVLR for Vehicle 01.', time: '12m ago', color: 'text-amber-400' },
-  { id: 4, type: 'info', icon: Truck, title: 'Vehicle 03 Dispatched', desc: 'Departed warehouse with 4 packages.', time: '20m ago', color: 'text-indigo-400' }
-];
+import API_BASE from '../api';
 
 const LiveActivity = () => {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    // Simulate real-time streaming of activities
-    let delay = 0;
-    const timeouts = mockActivities.map((act) => {
-      delay += 500;
-      return setTimeout(() => {
-        setActivities(prev => [act, ...prev].slice(0, 5));
-      }, delay);
-    });
-
-    return () => timeouts.forEach(clearTimeout);
+    const fetchActivities = async () => {
+      try {
+        const response = await fetch(API_BASE + "/api/orders/");
+        if (response.ok) {
+          const orders = await response.json();
+          // Sort by id descending (assuming higher id is newer)
+          orders.sort((a, b) => b.id - a.id);
+          
+          // Map to activities
+          const recentActivities = orders.slice(0, 10).map(order => {
+            if (order.status === 'in_process') {
+              return { id: `order-${order.id}`, type: 'success', icon: Truck, title: `Order #${order.id} Assigned`, desc: `Assigned to Vehicle ${order.assigned_vehicle_id}`, time: 'Recent', color: 'text-emerald-400' };
+            } else if (order.status === 'pending') {
+              return { id: `order-${order.id}`, type: 'warning', icon: AlertTriangle, title: `Order #${order.id} Pending`, desc: 'Awaiting routing optimization.', time: 'Recent', color: 'text-amber-400' };
+            } else if (order.status === 'delivered') {
+              return { id: `order-${order.id}`, type: 'info', icon: CheckCircle2, title: `Order #${order.id} Delivered`, desc: 'Drop-off confirmed.', time: 'Recent', color: 'text-blue-400' };
+            }
+            return { id: `order-${order.id}`, type: 'info', icon: Route, title: `Order #${order.id} Status: ${order.status}`, desc: 'System log updated.', time: 'Recent', color: 'text-gray-400' };
+          });
+          
+          setActivities(recentActivities);
+        }
+      } catch (error) {
+        console.error("Error fetching live activities:", error);
+      }
+    };
+    
+    fetchActivities();
+    const interval = setInterval(fetchActivities, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

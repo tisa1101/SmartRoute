@@ -7,27 +7,29 @@ const FleetStatus = () => {
   const [stats, setStats] = useState({ active: 0, idle: 0, maintenance: 0, total: 0 });
 
   useEffect(() => {
-    // In a real scenario, this fetches the fleet status breakdown
     const fetchStatus = async () => {
       try {
-        const response = await fetch(API_BASE + "/api/vehicles/");
+        const response = await fetch(API_BASE + "/api/analytics/dashboard-stats");
         if (response.ok) {
           const data = await response.json();
-          // Mocking the breakdown based on total vehicles
-          const total = data.length;
-          const active = Math.min(1, total); // Assume 1 is active for demo if there's any
+          const total = data.total_vehicles || 0;
+          const active = data.vehicles_with_in_process_orders || 0;
           setStats({
-            active,
-            idle: total - active,
+            active: active,
+            idle: Math.max(0, total - active),
             maintenance: 0,
-            total
+            total: total
           });
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching fleet stats:", error);
       }
     };
     fetchStatus();
+    
+    // Poll every 10 seconds for live updates
+    const interval = setInterval(fetchStatus, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const calculateWidth = (val, total) => total === 0 ? 0 : (val / total) * 100;
