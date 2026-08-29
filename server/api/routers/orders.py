@@ -39,13 +39,18 @@ def create_order(order: OrderCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_order)
 
-    # Note: We will move the OrderManager logic to a separate trigger or BackgroundTask later
-    # For now we'll keep it inline to maintain compatibility, but eventually, we should use a VRP engine endpoint.
-    try:
-        manager = OrderManager(db)
-        manager.assign_orders()
-    except Exception as e:
-        print(f"Failed to auto-assign: {e}")
+    import os
+    # If REDIS_URL is set (meaning we are running with Celery), use the background task.
+    # Otherwise, fallback to synchronous execution so it doesn't crash on free-tier Render.
+    if os.environ.get("REDIS_URL"):
+        from tasks import run_order_assignment
+        run_order_assignment.delay()
+    else:
+        try:
+            manager = OrderManager(db)
+            manager.assign_orders()
+        except Exception as e:
+            print(f"Failed to auto-assign: {e}")
 
     return db_order
 

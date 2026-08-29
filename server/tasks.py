@@ -1,21 +1,20 @@
 from worker import celery_app
-import time
+from database import SessionLocal
+from order_manager import OrderManager
+import traceback
 
 @celery_app.task(bind=True)
-def run_optimization_task(self, algorithm: str, data: dict):
+def run_order_assignment(self):
     """
-    Placeholder for the heavy optimization logic (Dijkstra, A*, VRP).
-    In a real implementation, this would invoke the core logic from order_manager or dsa.
+    Executes the heavy Dijkstra and TSP algorithms in a background Celery worker.
     """
-    # Simulate heavy computation
-    total_steps = 5
-    for i in range(total_steps):
-        time.sleep(1)
-        self.update_state(state="PROCESSING", meta={"progress": (i + 1) * 100 / total_steps})
-    
-    return {
-        "status": "success",
-        "algorithm": algorithm,
-        "optimized_route": "dummy_route_data",
-        "distance": 105.4
-    }
+    db = SessionLocal()
+    try:
+        self.update_state(state="PROCESSING", meta={"progress": "Computing optimal routes..."})
+        manager = OrderManager(db)
+        manager.assign_orders()
+        return {"status": "success", "message": "Routes successfully optimized via Celery"}
+    except Exception as e:
+        return {"status": "failed", "error": str(e), "traceback": traceback.format_exc()}
+    finally:
+        db.close()
