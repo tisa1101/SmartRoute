@@ -8,20 +8,34 @@ const Sidebar = ({ setRouteData }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [vehicles, setVehicles] = useState([]);
   const [activeVehicle, setActiveVehicle] = useState(null);
+  const [activeFleetIds, setActiveFleetIds] = useState(new Set());
 
   useEffect(() => {
-    const fetchVehicles = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(API_BASE + "/api/vehicles/");
-        if (response.ok) {
-          const data = await response.json();
-          setVehicles(data);
+        // Fetch vehicles
+        const vRes = await fetch(API_BASE + "/api/vehicles/");
+        if (vRes.ok) {
+          const vData = await vRes.json();
+          setVehicles(vData);
+        }
+        // Fetch orders to determine which vehicles are active
+        const oRes = await fetch(API_BASE + "/api/orders/");
+        if (oRes.ok) {
+          const oData = await oRes.json();
+          const activeIds = new Set(
+            oData.filter(o => o.status === 'in-process' && o.vehicle_id).map(o => o.vehicle_id)
+          );
+          setActiveFleetIds(activeIds);
         }
       } catch (error) {
-        console.error("Error fetching vehicles:", error);
+        console.error("Error fetching sidebar data:", error);
       }
     };
-    fetchVehicles();
+    
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchVehicleRoute = async (vehicleId) => {
@@ -74,7 +88,15 @@ const Sidebar = ({ setRouteData }) => {
                           <div className="flex flex-col">
                             <span className="font-semibold text-sm">Vehicle 0{vehicle.id}</span>
                             <span className="text-xs opacity-60 flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+                              {activeFleetIds.has(vehicle.id) ? (
+                                <>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+                                </>
+                              ) : (
+                                <>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Idle
+                                </>
+                              )}
                             </span>
                           </div>
                           

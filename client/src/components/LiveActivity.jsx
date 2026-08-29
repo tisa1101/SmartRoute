@@ -19,7 +19,7 @@ const LiveActivity = () => {
           // Map to activities
           const recentActivities = orders.slice(0, 10).map(order => {
             if (order.status === 'in-process') {
-              return { id: `order-${order.id}`, type: 'success', icon: Truck, title: `Order #${order.id} Assigned`, desc: `Assigned to Vehicle ${order.assigned_vehicle_id}`, time: 'Recent', color: 'text-emerald-400' };
+              return { id: `order-${order.id}`, type: 'success', icon: Truck, title: `Order #${order.id} Assigned`, desc: `Assigned to Vehicle 0${order.vehicle_id}`, time: 'Recent', color: 'text-emerald-400' };
             } else if (order.status === 'pending') {
               return { id: `order-${order.id}`, type: 'warning', icon: AlertTriangle, title: `Order #${order.id} Pending`, desc: 'Awaiting routing optimization.', time: 'Recent', color: 'text-amber-400' };
             } else if (order.status === 'delivered') {
