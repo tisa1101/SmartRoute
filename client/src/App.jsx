@@ -4,9 +4,8 @@ import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import VehiclesPage from './pages/VehiclesPage';
 import AlgorithmLab from './pages/AlgorithmLab';
-import Simulator from './pages/Simulator';
-import Analytics from './pages/Analytics';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<LoginPage />} /> {/* Mock register to login for now */}
+        <Route path="/register" element={<RegisterPage />} />
         
         {/* Protected Routes */}
         <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
