@@ -9,22 +9,35 @@ const HomePage = () => {
   const deliveryLocation = { lat: 19.180458, lng: 72.849696 }; // Example destination
   const [routeData, setRouteData] = useState(null); // Store selected vehicle route data
   return (
-    <>
+    <div className="bg-[#050811] min-h-screen text-gray-200">
       <Navbar />
-      <div className="flex">
-        {/* Sidebar on the Left */}
+      <div className="flex pt-16">
         <Sidebar setRouteData={setRouteData} />
         
-        {/* Main Content (Map and Other Components) */}
-        <div className="flex-1 max-w-7xl mx-auto pt-5 px-6">
-          {/* Add Map and Other Sections Here */}
+        <main className="flex-1 transition-all duration-400 ease-in-out p-6 max-w-[1600px] mx-auto">
+          {/* Dashboard Header */}
+          <div className="mb-8 mt-2 flex justify-between items-end">
+            <div>
+              <h1 className="text-3xl font-extrabold tracking-tight text-white mb-1">Fleet Command Center</h1>
+              <p className="text-sm text-gray-400 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Real-time visibility across your entire delivery network
+              </p>
+            </div>
+            <div className="text-right text-gray-400 text-sm font-medium">
+              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            </div>
+          </div>
 
           <DashboardMetrics routeData={routeData} />
-          {/* Add the Map component and pass origin and destination */}
-          <GoogleMapComponent origin={warehouseLocation} destination={deliveryLocation} routeData={routeData} />
-        </div>
+          
+          <div className="mt-6 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-gray-700/50 relative">
+            {/* The Map Component */}
+            <GoogleMapComponent origin={warehouseLocation} destination={deliveryLocation} routeData={routeData} />
+          </div>
+        </main>
       </div>
-    </>
+    </div>
   );
 };
 

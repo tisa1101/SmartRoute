@@ -1,10 +1,36 @@
+@import "leaflet/dist/leaflet.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "leaflet/dist/leaflet.css";
 
+@layer base {
+  body {
+    @apply bg-[#050811] text-gray-200 overflow-x-hidden;
+    font-family: "Inter", "Poppins", sans-serif;
+  }
+}
 
-:root {
-  font-family: "Poppins", sans-serif;
-  color-scheme: dark;
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(79, 70, 229, 0.4);
+    border-radius: 10px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(79, 70, 229, 0.8);
+  }
+}
+
+/* Make Leaflet dark mode compatible */
+.leaflet-layer,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-attribution {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
