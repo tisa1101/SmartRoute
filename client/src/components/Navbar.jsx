@@ -5,6 +5,7 @@ import logo from "../assets/logo5.png"; // Keeping original logo import
 
 const navItems = [
   { label: "Dashboard", href: "/" },
+  { label: "Analytics", href: "/analytics" },
   { label: "Order", href: "/order" },
   { label: "Vehicles", href: "/vehicles" }
 ];
