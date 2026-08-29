@@ -19,10 +19,32 @@ services:
     container_name: fastapi_backend
     depends_on:
       - db
+      - redis
     environment:
       DATABASE_URL: postgresql://myuser:mypassword@db:5432/mydatabase
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
     ports:
       - "8000:8000"
+
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: ./server
+    container_name: celery_worker
+    command: celery -A worker.celery_app worker --loglevel=info
+    depends_on:
+      - db
+      - redis
+      - backend
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@db:5432/mydatabase
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
 
   frontend:
     build:

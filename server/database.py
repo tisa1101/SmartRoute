@@ -5,11 +5,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# Use DATABASE_URL env var (Neon/Render) or fall back to local Docker DB
-URL_DATABASE = os.getenv(
-    "DATABASE_URL",
-    "postgresql://myuser:mypassword@db:5432/mydatabase"
-)
+# Strictly require DATABASE_URL from environment
+URL_DATABASE = os.environ.get("DATABASE_URL")
+if not URL_DATABASE:
+    raise ValueError("DATABASE_URL environment variable is required")
 
 # Neon uses ?sslmode=require — SQLAlchemy needs connect_args for SSL
 connect_args = {}

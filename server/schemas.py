@@ -6,7 +6,7 @@ class OrderCreate(BaseModel):
     name: str
     priority: int
     weight: float
-    delivery_coordinates: str
+    delivery_coordinates: dict
     order_datetime: Optional[datetime] = None
     status: Optional[str] = 'pending'
     delivery_distance: Optional[float] = None
@@ -42,3 +42,21 @@ class VehicleResponse(VehicleCreate):
 
     class Config:
         orm_mode = True
+
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    role: Optional[str] = 'user'
+
+class UserResponse(BaseModel):
+    id: int
+    email: str
+    role: str
+
+    class Config:
+        orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+

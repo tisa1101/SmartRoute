@@ -6,17 +6,23 @@ import VehiclesPage from './pages/VehiclesPage';
 import AlgorithmLab from './pages/AlgorithmLab';
 import Simulator from './pages/Simulator';
 import Analytics from './pages/Analytics';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/order" element={<OrderPage />} />
-        <Route path="/vehicles" element={<VehiclesPage />} />
-        <Route path="/algorithmlab" element={<AlgorithmLab />} />
-        <Route path="/simulator" element={<Simulator />} />
-        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<LoginPage />} /> {/* Mock register to login for now */}
+        
+        {/* Protected Routes */}
+        <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+        <Route path="/order" element={<ProtectedRoute><OrderPage /></ProtectedRoute>} />
+        <Route path="/vehicles" element={<ProtectedRoute><VehiclesPage /></ProtectedRoute>} />
+        <Route path="/algorithmlab" element={<ProtectedRoute><AlgorithmLab /></ProtectedRoute>} />
+        <Route path="/simulator" element={<ProtectedRoute><Simulator /></ProtectedRoute>} />
+        <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

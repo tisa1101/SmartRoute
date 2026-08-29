@@ -1,16 +1,20 @@
-from sqlalchemy import Column, Integer, Float, String, Boolean, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Float, String, Boolean, ForeignKey, DateTime, JSON, CheckConstraint
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
 
 class Order(Base):
     __tablename__ = "orders"
+    __table_args__ = (
+        CheckConstraint('weight >= 0', name='check_weight_positive'),
+        CheckConstraint('delivery_distance >= 0', name='check_distance_positive'),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
     priority = Column(Integer, nullable=False)  # e.g., 5=Emergency, 1=Low
     name = Column(String, nullable=False)
     weight = Column(Float, nullable=False)
-    delivery_coordinates = Column(String, nullable=False)
+    delivery_coordinates = Column(JSON, nullable=False)
     order_datetime = Column(DateTime, nullable=False, default=datetime.utcnow)
     status = Column(String, default='pending')
     delivery_distance = Column(Float, nullable=True) 
@@ -100,3 +104,11 @@ class DeliveryHistory(Base):
     status = Column(String, nullable=False)
     algorithm = Column(String, nullable=False)
     optimization_score = Column(Float, nullable=True)
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    role = Column(String, default='user')
+
