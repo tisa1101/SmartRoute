@@ -48,10 +48,21 @@ const OrderInputForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting Order:", orderData);
+    
+    // Convert coordinate string back to an object to match Backend Pydantic Schema
+    const [lat, lng] = orderData.delivery_coordinates.split(",");
+    const payload = {
+      ...orderData,
+      delivery_coordinates: {
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
+      }
+    };
+    
+    console.log("Submitting Order:", payload);
 
     try {
-      const response = await axios.post(API_BASE + "/api/orders/", orderData);
+      const response = await axios.post(API_BASE + "/api/orders/", payload);
       console.log("Order Created:", response.data);
       alert("Order successfully created!");
     } catch (error) {
