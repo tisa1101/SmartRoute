@@ -82,9 +82,18 @@ def dynamic_reroute(req: RerouteRequest, db: Session = Depends(get_db)):
 @router.get("/compare")
 def compare_algorithms(db: Session = Depends(get_db)):
     # Stub for algorithm comparison lab
-    # Returns benchmark results for Dijkstra vs A* vs TSP
     return [
         {"algorithm": "Dijkstra", "distance": 12.4, "time_ms": 45, "nodes": 1200},
         {"algorithm": "A*", "distance": 12.4, "time_ms": 12, "nodes": 350},
         {"algorithm": "Greedy VRP", "distance": 15.2, "time_ms": 5, "nodes": 50},
     ]
+
+from order_manager import OrderManager
+import traceback
+@router.get("/debug_assign")
+def debug_assign(db: Session = Depends(get_db)):
+    try:
+        OrderManager(db).assign_orders()
+        return {"status": "SUCCESS"}
+    except Exception as e:
+        return {"status": "FAILED", "error": str(e), "traceback": traceback.format_exc()}
