@@ -96,18 +96,7 @@ const Sidebar = ({ setRouteData }) => {
                 </div>
                 
                 <div className="mt-auto px-2 pb-4">
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">System Actions</h3>
-                  <div className="space-y-1">
-                    <button className="flex items-center gap-3 p-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-xl w-full transition-colors">
-                      <Activity size={18} /> Diagnostics
-                    </button>
-                    <button className="flex items-center gap-3 p-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-xl w-full transition-colors">
-                      <ShieldAlert size={18} /> Alerts
-                    </button>
-                    <button className="flex items-center gap-3 p-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-xl w-full transition-colors">
-                      <Settings size={18} /> Settings
-                    </button>
-                  </div>
+                  {/* Footer space preserved */}
                 </div>
               </motion.div>
             )}

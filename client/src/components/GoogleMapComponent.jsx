@@ -116,35 +116,32 @@ const MapComponent = ({ routeData }) => {
       />
 
       {/* Assigned Orders List */}
-      <div className="p-6 bg-gray-800 rounded-lg shadow-md mt-6">
-        <h1 className="text-3xl font-bold text-orange-400 mb-4">Assigned Orders</h1>
+      <div className="mt-6 bg-[#1a1f2e]/80 backdrop-blur-md rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-gray-700/50">
+        <h2 className="text-lg font-bold text-white tracking-wide mb-4">Assigned Route Orders</h2>
         {orders.length === 0 ? (
-          <p className="text-gray-300">No orders assigned</p>
+          <p className="text-sm text-gray-500 italic">No vehicle route selected. Click a vehicle in the sidebar to load its manifest.</p>
         ) : (
-          <ul className="space-y-4">
-            {orders.map((order) => (
-              <li key={order.id} className="bg-gray-700 p-4 rounded-lg shadow-md">
-                <p className="text-lg font-medium text-white">
-                  <strong>Name:</strong> {order.name}
-                </p>
-                <p className="text-sm text-gray-300">
-                  <strong>Priority:</strong> {order.priority}
-                </p>
-                <p className="text-sm text-gray-300">
-                  <strong>Weight:</strong> {order.weight} kg
-                </p>
-                <p className="text-sm text-gray-300">
-                  <strong>Status:</strong> {order.status}
-                </p>
-                <p className="text-sm text-gray-300">
-                  <strong>Distance:</strong> {order.delivery_distance ?? "—"} km
-                </p>
-                <p className="text-sm text-gray-300">
-                  <strong>Estimated Delivery:</strong> {order.estimate_delivery_time ?? "—"}
-                </p>
-              </li>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {orders.map((order, i) => (
+              <div key={order.id} className="bg-gray-800/40 p-4 rounded-xl border border-gray-700/30 flex flex-col gap-2 relative overflow-hidden group hover:bg-gray-800/60 transition-colors">
+                <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                <div className="flex justify-between items-start">
+                  <h3 className="font-semibold text-gray-200 flex items-center gap-2">
+                    <span className="bg-blue-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">{i + 1}</span>
+                    {order.name}
+                  </h3>
+                  <span className="text-xs px-2 py-1 bg-gray-900/50 rounded-md font-mono text-gray-400">Order #{order.id}</span>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 text-sm">
+                  <p className="text-gray-400 flex justify-between">Priority: <span className="text-white font-medium">{order.priority}</span></p>
+                  <p className="text-gray-400 flex justify-between">Weight: <span className="text-white font-medium">{order.weight}kg</span></p>
+                  <p className="text-gray-400 flex justify-between">Distance: <span className="text-white font-medium">{order.delivery_distance ? order.delivery_distance.toFixed(1) : "—"} km</span></p>
+                  <p className="text-gray-400 flex justify-between">ETA: <span className="text-white font-medium">{order.estimate_delivery_time ?? "—"}</span></p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>

@@ -7,8 +7,6 @@ import LiveActivity from '../components/LiveActivity';
 import FleetStatus from '../components/FleetStatus';
 
 const HomePage = () => {
-  const warehouseLocation = { lat: 19.116458, lng: 72.902696 };
-  const deliveryLocation = { lat: 19.180458, lng: 72.849696 };
   const [routeData, setRouteData] = useState(null);
 
   return (
@@ -39,7 +37,7 @@ const HomePage = () => {
             
             {/* The Map Component (Takes up 2 columns on large screens) */}
             <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-gray-700/50 relative h-[600px]">
-              <GoogleMapComponent origin={warehouseLocation} destination={deliveryLocation} routeData={routeData} />
+              <GoogleMapComponent routeData={routeData} />
             </div>
 
             {/* Side Panels (Takes up 1 column on large screens) */}
