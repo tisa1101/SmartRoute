@@ -5,10 +5,11 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# Strictly require DATABASE_URL from environment
+# Strictly require DATABASE_URL from environment, fallback to SQLite if missing
 URL_DATABASE = os.environ.get("DATABASE_URL")
 if not URL_DATABASE:
-    raise ValueError("DATABASE_URL environment variable is required")
+    print("WARNING: DATABASE_URL environment variable is missing. Falling back to SQLite.")
+    URL_DATABASE = "sqlite:///./sql_app.db"
 
 # Neon uses ?sslmode=require — SQLAlchemy needs connect_args for SSL
 connect_args = {}
