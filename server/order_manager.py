@@ -192,7 +192,10 @@ class OrderManager:
             order_map = {}  # Maps delivery index → order object
 
             for idx, order in enumerate(vehicle_orders):
-                coords = tuple(map(float, order.delivery_coordinates.split(",")))
+                if isinstance(order.delivery_coordinates, dict):
+                    coords = (float(order.delivery_coordinates['lat']), float(order.delivery_coordinates['lng']))
+                else:
+                    coords = tuple(map(float, order.delivery_coordinates.split(",")))
                 delivery_locations.append(coords)
                 order_map[idx] = order  # Map index to order object
 
@@ -215,7 +218,10 @@ class OrderManager:
                     assigned_orders_as_per_route.append(order)
 
                     # Fetch weather data
-                    lat, lon = map(str.strip, order.delivery_coordinates.split(","))
+                    if isinstance(order.delivery_coordinates, dict):
+                        lat, lon = str(order.delivery_coordinates['lat']), str(order.delivery_coordinates['lng'])
+                    else:
+                        lat, lon = map(str.strip, order.delivery_coordinates.split(","))
 
                     print("for weather",lat, lon)
                     weather_condition, weather_factor_value = self.get_weather(lat, lon)
