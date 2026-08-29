@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import GoogleMapComponent from '../components/GoogleMapComponent';
 import DashboardMetrics from '../components/DashboardMetrics';
+import LiveActivity from '../components/LiveActivity';
+import FleetStatus from '../components/FleetStatus';
 
 const HomePage = () => {
-  const warehouseLocation = { lat: 19.116458, lng: 72.902696 }; // Fixed warehouse location
-  const deliveryLocation = { lat: 19.180458, lng: 72.849696 }; // Example destination
-  const [routeData, setRouteData] = useState(null); // Store selected vehicle route data
+  const warehouseLocation = { lat: 19.116458, lng: 72.902696 };
+  const deliveryLocation = { lat: 19.180458, lng: 72.849696 };
+  const [routeData, setRouteData] = useState(null);
+
   return (
     <div className="bg-[#050811] min-h-screen text-gray-200">
       <Navbar />
@@ -31,9 +34,24 @@ const HomePage = () => {
 
           <DashboardMetrics routeData={routeData} />
           
-          <div className="mt-6 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-gray-700/50 relative">
-            {/* The Map Component */}
-            <GoogleMapComponent origin={warehouseLocation} destination={deliveryLocation} routeData={routeData} />
+          {/* Map & Side Panels Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+            
+            {/* The Map Component (Takes up 2 columns on large screens) */}
+            <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-gray-700/50 relative h-[600px]">
+              <GoogleMapComponent origin={warehouseLocation} destination={deliveryLocation} routeData={routeData} />
+            </div>
+
+            {/* Side Panels (Takes up 1 column on large screens) */}
+            <div className="flex flex-col gap-6 h-[600px]">
+              <div className="flex-1 min-h-[300px]">
+                <LiveActivity />
+              </div>
+              <div className="flex-1 min-h-[250px]">
+                <FleetStatus />
+              </div>
+            </div>
+
           </div>
         </main>
       </div>
